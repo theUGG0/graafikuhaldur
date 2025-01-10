@@ -13,5 +13,8 @@ const compat = new FlatCompat({
 export default [
 
   // mimic ESLintRC-style extends
-  ...compat.extends('eslint-config-standard')
+  ...compat.extends('eslint-config-standard'),
+  ...compat.env({
+    node: true
+  })
 ]

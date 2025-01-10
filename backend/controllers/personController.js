@@ -1,9 +1,11 @@
 const Person = require('../models/Person')
 
-const getPersons = (req, res) => {
-  Person.find({}).then(persons => {
-    res.json(persons)
-  })
+const getAllPersons = (req, res) => {
+  Person.find({})
+    .select('-password')
+    .then(persons => {
+      res.json(persons)
+    })
 }
 
 const getPersonByName = (req, res) => {
@@ -30,7 +32,7 @@ const addPerson = (req, res) => {
     }
     )
     .catch(err => {
-        res.status(400).json({ error: err })
+      res.status(400).json({ error: err })
     })
 }
 
