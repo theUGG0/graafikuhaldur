@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import { Schema, model } from 'mongoose'
 
-const PersonSchema = new mongoose.Schema({
+const personSchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -17,4 +17,6 @@ const PersonSchema = new mongoose.Schema({
     holidayCount: Number
 })
 
-const User = mongoose.model('Person', personSchema)
+const User = model('Person', personSchema)
+
+export default User
