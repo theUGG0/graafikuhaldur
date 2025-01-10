@@ -1,16 +1,20 @@
 const mongoose = require('mongoose')
 
-const UserSchema = new mongoose.Schema({
+const PersonSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        unique: true,
+        required: true
     },
-    groups: {
-        type: [String],
+    password: {
+        type: String,
+        minlength: 8,
+        required: true
     },
-    upcomingDates: {
-        type: [Date]
-    },
+    groups: [String],
+    upcomingDates: [Date],
     weekdayCount: Number,
     holidayCount: Number
 })
+
+const User = mongoose.model('Person', personSchema)
