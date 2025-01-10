@@ -7,7 +7,7 @@ const getPersons = (req, res) => {
 }
 
 const getPersonByName = (req, res) => {
-  Person.find({ name: req.body.name }).then(person => {
+  Person.find({ name: req.params.name }).then(person => {
     if (person) {
       res.json(person)
     } else {
@@ -25,9 +25,13 @@ const addPerson = (req, res) => {
   })
 
   person.save()
-    .then(
-      res.json(person)
+    .then(savedPerson => {
+      res.json(savedPerson)
+    }
     )
+    .catch(err => {
+        res.status(400).json({ error: err })
+    })
 }
 
 module.exports = { getPersons, getPersonByName, addPerson }
