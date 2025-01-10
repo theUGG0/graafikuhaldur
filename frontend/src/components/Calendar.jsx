@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { eachDayOfInterval, getDaysInMonth, getISODay, getMonth, getYear, sub, add, getDate} from "date-fns"
+import { eachDayOfInterval, getDaysInMonth, getISODay, getMonth, getYear, sub, add, getDate, setMonth} from "date-fns"
+import CalendarDay from "./CalendarDay"
 
 const generateMonthMap = ({month, year}) => {
 
@@ -26,13 +27,21 @@ const Calendar = () => {
     const today = new Date()
 
     const [calendarState, setCalendarState] = useState({
-        month: 1,
-        year: 2021
+        month: getMonth(today),
+        year: getYear(today),
     })
 
-    
+    const [calendarSelection, setcalendarSelection] = useState(undefined)
 
-    console.log(21%7);
+    const handleMonthChange = (change) => {
+        const prevMonth = calendarState.month
+        
+        const newMonth = (prevMonth + change + 12) % 12
+        const newYear = calendarState.year + (newMonth < prevMonth ? (change > 0 ? 1 : -1) : 0)
+        setCalendarState({ month:newMonth, year:newYear})
+    }
+
+    console.log(calendarState);
     console.log(generateMonthMap(calendarState))
     const monthMap = generateMonthMap(calendarState)
 
@@ -45,9 +54,12 @@ const Calendar = () => {
             <thead><th colSpan={7}>{months[calendarState.month]}</th></thead>
             <tbody>
                 {weekdays.map(day => (<th>{day}</th>))}
-                {monthMap.map(week => (<tr>{week.map(day => <td>{getDate(day)}</td>)}</tr>))}
-           
+                {monthMap.map(week => (<tr>{week.map(day => <CalendarDay day={getDate(day)}/>)}</tr>))}
            </tbody>
+           <div>
+           <button onClick={() => handleMonthChange(-1)}>{"<"}</button>
+           <button onClick={() => handleMonthChange(1)}>{">"}</button>
+           </div>
         </table>
         </>
     )

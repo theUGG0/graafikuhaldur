@@ -3,9 +3,9 @@ const CalendarDay = (props) => {
 
 
     return (
-        <div>
+        <td>
             {props.day}
-        </div>
+        </td>
     )
 }
 
