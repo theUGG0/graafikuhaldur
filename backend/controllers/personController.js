@@ -1,7 +1,13 @@
 import Person from "../models/Person"
 
+const getPersons = (req, res) => {
+    Person.find({}).then(persons => {
+        res.json(persons)
+    })
+}
+
 const getPersonByName = (req, res) => {
-    Person.find({name: req.body}).then(person => {
+    Person.find({name: req.body.name}).then(person => {
         if (person) {
             res.json(person)
         }
@@ -21,8 +27,8 @@ const addPerson = (req, res) => {
 
     person.save()
     .then(
-        res.json()
+        res.json(person)
     )
 }
 
-export default { getPersonByName, addPerson }
+export default { getPersons, getPersonByName, addPerson }
