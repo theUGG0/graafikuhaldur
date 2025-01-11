@@ -1,10 +1,12 @@
+import { getDate } from "date-fns"
 
 const CalendarDay = (props) => {
 
 
+
     return (
-        <td>
-            {props.day}
+        <td onClick={() => props.selectDay(props.day)}>
+            {getDate(props.day)}
         </td>
     )
 }

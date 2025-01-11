@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { eachDayOfInterval, getDaysInMonth, getISODay, getMonth, getYear, sub, add, getDate, setMonth} from "date-fns"
 import CalendarDay from "./CalendarDay"
 
@@ -12,8 +12,6 @@ const generateMonthMap = ({month, year}) => {
 
     const intervalStartOffset = 1-firstDateOfMonth
     const intervalEndOffset = 7-lastDateOfMonth
-
-    console.log(sub(firstDayOfMonth, {days: intervalStartOffset}), intervalEndOffset)
 
     const monthDays = eachDayOfInterval({ start: add(firstDayOfMonth, {days: intervalStartOffset}), end: add(lastDayOfMonth, {days: intervalEndOffset}) })
 
@@ -33,6 +31,9 @@ const Calendar = () => {
 
     const [calendarSelection, setcalendarSelection] = useState(undefined)
 
+    const monthMap = useMemo(() => generateMonthMap(calendarState), [calendarState])
+    
+
     const handleMonthChange = (change) => {
         const prevMonth = calendarState.month
         
@@ -41,9 +42,11 @@ const Calendar = () => {
         setCalendarState({ month:newMonth, year:newYear})
     }
 
+    const handleDayClick = (day) => {
+        setcalendarSelection(day)
+    }
+
     console.log(calendarState);
-    console.log(generateMonthMap(calendarState))
-    const monthMap = generateMonthMap(calendarState)
 
     return (
         <>
@@ -54,7 +57,7 @@ const Calendar = () => {
             <thead><th colSpan={7}>{months[calendarState.month]}</th></thead>
             <tbody>
                 {weekdays.map(day => (<th>{day}</th>))}
-                {monthMap.map(week => (<tr>{week.map(day => <CalendarDay day={getDate(day)}/>)}</tr>))}
+                {monthMap.map(week => (<tr>{week.map(day => <CalendarDay selectDay={handleDayClick} day={day}/>)}</tr>))}
            </tbody>
            <div>
            <button onClick={() => handleMonthChange(-1)}>{"<"}</button>
