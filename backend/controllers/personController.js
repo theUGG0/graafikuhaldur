@@ -26,6 +26,11 @@ const addPerson = (req, res) => {
     password: body.password
   })
 
+  if(body.groups) person.groups = body.groups
+  if(body.upcomingDates) person.upcomingDates = body.upcomingDates.map(sd => new Date(sd))
+  if(body.weekdayCount) person.weekdayCount = body.weekdayCount
+  if(body.holidayCount) person.holidayCount = body.holidayCount
+
   person.save()
     .then(savedPerson => {
       res.json(savedPerson)
@@ -36,4 +41,4 @@ const addPerson = (req, res) => {
     })
 }
 
-module.exports = { getPersons, getPersonByName, addPerson }
+module.exports = { getAllPersons, getPersonByName, addPerson }

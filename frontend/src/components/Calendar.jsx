@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
-import { eachDayOfInterval, getDaysInMonth, getISODay, getMonth, getYear, sub, add, getDate, setMonth} from "date-fns"
+import { eachDayOfInterval, getDaysInMonth, getISODay, getMonth, getYear, sub, add, getDate, setMonth, isSameDay} from "date-fns"
 import CalendarDay from "./CalendarDay"
+import DayPopup from "./DayPopup"
 
 const generateMonthMap = ({month, year}) => {
 
@@ -18,7 +19,7 @@ const generateMonthMap = ({month, year}) => {
     return [monthDays.slice(0, 7), monthDays.slice(7, 14), monthDays.slice(14, 21), monthDays.slice(21, 28), monthDays.slice(28, 35)]
 }
 
-const Calendar = () => {
+const Calendar = ({people}) => {
     
     const weekdays = ["Mon", "Tue", 'Wed', 'Thu', 'Fri', 'Sat', "Sun"]
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -46,7 +47,7 @@ const Calendar = () => {
         setcalendarSelection(day)
     }
 
-    console.log(calendarState);
+    console.log(monthMap);
 
     return (
         <>
@@ -54,16 +55,22 @@ const Calendar = () => {
             Calendar
         </div>
         <table>
-            <thead><th colSpan={7}>{months[calendarState.month]}</th></thead>
+            <thead><tr><th colSpan={7}>{months[calendarState.month]}</th></tr></thead>
             <tbody>
                 {weekdays.map(day => (<th>{day}</th>))}
-                {monthMap.map(week => (<tr>{week.map(day => <CalendarDay selectDay={handleDayClick} day={day}/>)}</tr>))}
+                {monthMap.map((week,i) => (
+                    <tr key={i}>
+                    {week.map((day, j) => (
+                    <CalendarDay key={j} assignedPeople={people.filter(p => p.upcomingDates.some(d => (isSameDay(d, day))))} selectDay={handleDayClick} day={day}/>
+                    ))}
+                    </tr>))}
            </tbody>
-           <div>
+        </table>
+        <div>
            <button onClick={() => handleMonthChange(-1)}>{"<"}</button>
            <button onClick={() => handleMonthChange(1)}>{">"}</button>
-           </div>
-        </table>
+        </div>
+        <DayPopup selectedDate={calendarSelection}/>
         </>
     )
 

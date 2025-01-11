@@ -1,12 +1,20 @@
-import { getDate } from "date-fns"
+import { getDate, isValid } from "date-fns"
 
-const CalendarDay = (props) => {
+const CalendarDay = ({day, selectDay, assignedPeople}) => {
+    
+    console.log(assignedPeople);
+    
 
-
+    if(!day || !isValid(day)){
+        return (
+            <td>Err</td>
+        )
+    }
 
     return (
-        <td onClick={() => props.selectDay(props.day)}>
-            {getDate(props.day)}
+        <td onClick={() => selectDay(day)}>
+            {getDate(day)}
+            {assignedPeople.map(p => <div>{p.name}</div>)}
         </td>
     )
 }
