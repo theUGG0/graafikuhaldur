@@ -52,7 +52,7 @@ const assignDayToPerson = (req, res) => {
 
   const dateCountToUpdate = formattedDateToAdd.getDay() < 6 && formattedDateToAdd.getDay > 0 ? { weekdayCount: 1 } : { holidayCount: 1 }
 
-  Person.findOneAndUpdate({ name: body.name }, { $inc: { ...dateCountToUpdate }, $push: { upcomingDates: formattedDateToAdd } }, { new: true })
+  Person.findOneAndUpdate({ name: req.params.name }, { $inc: { ...dateCountToUpdate }, $push: { upcomingDates: formattedDateToAdd } }, { new: true })
     .then((updatedPerson) => (
       res.status(200).json(updatedPerson)
     )

@@ -6,5 +6,6 @@ const router = express.Router()
 router.get('/persons', personController.getAllPersons)
 router.get('/persons/:name', personController.getPersonByName)
 router.post('/persons', personController.addPerson)
+router.update('/persons/:name', personController.assignDayToPerson)
 
 module.exports = router
