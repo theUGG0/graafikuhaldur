@@ -1,9 +1,6 @@
 import { getDate, isValid } from "date-fns"
 
-const CalendarDay = ({day, selectDay, assignedPeople}) => {
-    
-    console.log(assignedPeople);
-    
+const CalendarDay = ({day, selectDay, assignedPeople}) => {    
 
     if(!day || !isValid(day)){
         return (

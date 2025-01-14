@@ -32,6 +32,8 @@ const Calendar = ({people}) => {
 
     const [calendarSelection, setcalendarSelection] = useState(undefined)
 
+    console.log(calendarState)
+
     const monthMap = useMemo(() => generateMonthMap(calendarState), [calendarState])
     
 
@@ -39,15 +41,13 @@ const Calendar = ({people}) => {
         const prevMonth = calendarState.month
         
         const newMonth = (prevMonth + change + 12) % 12
-        const newYear = calendarState.year + (newMonth < prevMonth ? (change > 0 ? 1 : -1) : 0)
+        const newYear = calendarState.year + (newMonth < prevMonth && change > 0 ? 1 : (newMonth > prevMonth && change < 0 ? -1 : 0))
         setCalendarState({ month:newMonth, year:newYear})
     }
 
     const handleDayClick = (day) => {
         setcalendarSelection(day)
     }
-
-    console.log(monthMap);
 
     return (
         <>
@@ -70,7 +70,7 @@ const Calendar = ({people}) => {
            <button onClick={() => handleMonthChange(-1)}>{"<"}</button>
            <button onClick={() => handleMonthChange(1)}>{">"}</button>
         </div>
-        <DayPopup selectedDate={calendarSelection}/>
+        <DayPopup selectedDate={calendarSelection} people={people} peoplePerDay={2}/>
         </>
     )
 
