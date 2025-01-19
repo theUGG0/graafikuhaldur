@@ -1,0 +1,6 @@
+PUT http://localhost:5001/api/persons/sampleClaude
+content-type: application/json
+
+{
+    "dateToAdd": "2025-01-19T00:00:00.000Z"
+}
