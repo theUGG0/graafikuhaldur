@@ -18,24 +18,21 @@ const DayPopup = ({selectedDate, people, peoplePerDay=2, updatePersonUpcomingDat
     }
 
 
-    const handleSelect = (optionsToAdd, dateToAdd) => {
-        const addedPersonNames = optionsToAdd.map(po => po.value)        
-        const newSelected = addedPersonNames.filter(pn => {
+    const handleSelect = (selectedOptions, dateToAdd) => {
+        const selectedOptionNames = selectedOptions.map(po => po.value)
+
+        const newSelectedName = selectedOptionNames.find(pn => {
             return !assignedPeople.some(ap => ap.name === pn)
         }
         )
 
-        console.log(newSelected)
-
-        var assignedPeopleObjectsToSet = people.filter(p => addedPersonNames.includes(p.name))
-
-        console.log(assignedPeopleObjectsToSet)
+        const newSelectedObject = people.find(p => newSelectedName === p.name)
         
+        setAssignedPeople(prev => [...prev, newSelectedObject])
 
-        setAssignedPeople(assignedPeopleObjectsToSet)
-
-        updatePersonUpcomingDates(newSelected[0], dateToAdd)
-        personService.addDateToPerson(newSelected[0], dateToAdd)
+        updatePersonUpcomingDates(newSelectedObject, dateToAdd)
+        
+        personService.addDateToPerson(newSelected, dateToAdd)
     }
     
     

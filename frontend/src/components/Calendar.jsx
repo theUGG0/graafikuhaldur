@@ -73,7 +73,7 @@
                     {monthMap.map((week,i) => (
                         <tr key={i}>
                         {week.map((day, j) => (
-                        <CalendarDay key={j} assignedPeople={people.filter(p => p.upcomingDates.some(d => (isSameDay(d, day))))} selectDay={handleDayClick} day={day}/>
+                        <CalendarDay key={j} assignedPeople={people.filter(p => p.upcomingDates.some(d => (isSameDay(new Date(d), day))))} selectDay={handleDayClick} day={day}/>
                         ))}
                         </tr>))}
             </tbody>
