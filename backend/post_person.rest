@@ -1,8 +1,6 @@
-POST http://localhost:5001/api/persons
+PUT http://localhost:5001/api/persons/sampleClaude
 content-type: application/json
 
 {
-    "name": "sampleClaude",
-    "password": "doo-doo-doo",
-    "upcomingDates": ["2025-01-11T00:00:00.000Z","2025-01-15T00:00:00.000Z","2025-01-20T00:00:00.000Z"],
+    "upcomingDates": ["2025-01-11T00:00:00.000Z","2025-01-15T00:00:00.000Z","2025-01-20T00:00:00.000Z", "2026-01-20T00:00:00.000Z"]
 }

@@ -55,8 +55,8 @@
             setcalendarSelection(day)
         }
 
-        const updatePersonUpcomingDates = (personToEdit, dateToAdd) => {        
-            setPeople((previous) => previous.map(p => p.name === personToEdit.name ? {...p, upcomingDates: [...p.upcomingDates, dateToAdd]} : p))
+        const updatePersonUpcomingDates = (personToEdit, modifiedUpcomingDates) => {        
+            setPeople((previous) => previous.map(p => p.name === personToEdit.name ? {...p, upcomingDates: modifiedUpcomingDates} : p))
             console.log(people)
             
         }

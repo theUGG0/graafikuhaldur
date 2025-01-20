@@ -62,17 +62,21 @@ const assignDayToPerson = (req, res) => {
     ))
 }
 
-// const updatePersonByName = (req, res) => {
-//   const body = req.body
+const updatePersonByName = (req, res) => {
+  const body = req.body
 
-//   const update = {}
+  const update = {}
 
-//   if (body.groups) update.groups = body.groups
-//   if (body.upcomingDates) update.upcomingDates = body.upcomingDates.map(sd => new Date(sd))
-//   if (body.weekdayCount) update.weekdayCount = body.weekdayCount
-//   if (body.holidayCount) update.holidayCount = body.holidayCount
+  if (body.groups) update.groups = body.groups
+  if (body.upcomingDates) update.upcomingDates = body.upcomingDates.map(sd => new Date(sd))
+  if (body.weekdayCount) update.weekdayCount = body.weekdayCount
+  if (body.holidayCount) update.holidayCount = body.holidayCount
 
-//   Person.findOneAndUpdate({ name: body.name }, {})
-// }
+  Person.findOneAndUpdate({ name: req.params.name }, update, { new: true }).then(updatedPerson => (
+    res.status(200).json(updatedPerson)
+  )).catch((err) => (
+    res.status(500).json({ error: err })
+  ))
+}
 
-module.exports = { getAllPersons, getPersonByName, addPerson, assignDayToPerson }
+module.exports = { getAllPersons, getPersonByName, addPerson, updatePersonByName }

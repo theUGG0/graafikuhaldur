@@ -7,8 +7,12 @@ const getAllPeople = () => (
     axios.get(`${baseURL}/persons`).then(response => response.data)
 )
 
-const addDateToPerson = (personName, dateToAdd) => (
-    axios.put(`${baseURL}/persons/${personName}`, {dateToAdd: dateToAdd}).then(response => response.data)
+const addDateToPerson = (personObject, dateToAdd) => (
+    axios.put(`${baseURL}/persons/${personObject.name}`, {upcomingDates: [...personObject.upcomingDates, new Date(dateToAdd)]}).then(response => response.data)
+)
+
+const removeDateFromPerson = (personObject, dateToRemove) => (
+    axios.put(`${baseURL}/persons/${personObject.name}`, {upcomingDates: personObject.upcomingDates.filter(d => !isSameDay(new Date(d), dateToRemove))}).then(response => response.data)
 )
 
 const getAllPeopleWithDate = (dateToFind) => {    
@@ -25,4 +29,4 @@ const getAllPeopleWithDate = (dateToFind) => {
     }))})
 }
 
-export default {getAllPeople, addDateToPerson, getAllPeopleWithDate}
+export default {getAllPeople, addDateToPerson, getAllPeopleWithDate, removeDateFromPerson}

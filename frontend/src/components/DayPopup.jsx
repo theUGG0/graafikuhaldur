@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Select from 'react-select'
 import personService from '../../services/personService'
+import { isSameDay } from 'date-fns'
 
 const DayPopup = ({selectedDate, people, peoplePerDay=2, updatePersonUpcomingDates}) => {
     
@@ -18,10 +19,26 @@ const DayPopup = ({selectedDate, people, peoplePerDay=2, updatePersonUpcomingDat
     }
 
 
-    const handleSelect = (selectedOptions, dateToAdd) => {
+    const handleSelect = (selectedOptions, dateToUpdate) => {
 
 
         const selectedOptionNames = selectedOptions.map(po => po.value)
+
+        const removedObject = assignedPeople.filter(ap => !selectedOptionNames.includes(ap.name))[0]
+
+        if(removedObject){
+            console.log("Person removed!")
+
+            console.log(selectedOptionNames, removedObject)
+
+            setAssignedPeople(prev => prev.filter(pn => pn.name !== removedObject.name))
+            updatePersonUpcomingDates(removedObject, removedObject.upcomingDates.filter(d => !isSameDay(new Date(d), dateToUpdate)))
+            personService.removeDateFromPerson(removedObject, dateToUpdate)
+
+            console.log(assignedPeople)
+            
+            return
+        }
 
         const newModifiedName = selectedOptionNames.find(pn => {
             return !assignedPeople.some(ap => ap.name === pn)
@@ -32,9 +49,9 @@ const DayPopup = ({selectedDate, people, peoplePerDay=2, updatePersonUpcomingDat
         
         setAssignedPeople(prev => [...prev, newModifiedObject])
 
-        updatePersonUpcomingDates(newModifiedObject, dateToAdd)
+        updatePersonUpcomingDates(newModifiedObject, [...newModifiedObject.upcomingDates, new Date (dateToUpdate)])
 
-        personService.addDateToPerson(newModifiedName, dateToAdd)
+        personService.addDateToPerson(newModifiedObject, dateToUpdate)
     }
     
     
