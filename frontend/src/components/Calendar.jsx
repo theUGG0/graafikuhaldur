@@ -19,7 +19,7 @@
         return [monthDays.slice(0, 7), monthDays.slice(7, 14), monthDays.slice(14, 21), monthDays.slice(21, 28), monthDays.slice(28, 35)]
     }
 
-    const Calendar = ({initialPeople}) => {
+    const Calendar = ({people, setPeople}) => {
         
         const weekdays = ["Mon", "Tue", 'Wed', 'Thu', 'Fri', 'Sat', "Sun"]
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -31,12 +31,11 @@
         })
 
         const [calendarSelection, setcalendarSelection] = useState(undefined)
-        const [people, setPeople] = useState(initialPeople)
 
         useEffect(() => {
-            setPeople(initialPeople)
+            setPeople(people)
             console.log("people", people)
-        }, [initialPeople])
+        }, [people])
 
         console.log(people)
 

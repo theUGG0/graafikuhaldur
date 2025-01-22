@@ -4,16 +4,16 @@ import personService from "../../services/personService"
 
 
 const Schedule = () => {
-    const [initialPeople, setInitialPeople] = useState([])
+    const [people, setPeople] = useState([])
 
     useEffect(() => {
         personService.getAllPeople().then(ps => {
-            setInitialPeople(ps)
+            setPeople(ps)
     })
     }, [])
 
     return(
-    <Calendar initialPeople={initialPeople}></Calendar>)
+    <Calendar people={people} setPeople={setPeople}></Calendar>)
 }
 
 export default Schedule
