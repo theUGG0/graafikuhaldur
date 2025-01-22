@@ -41,7 +41,7 @@ const addPerson = (req, res) => {
     })
 }
 
-const assignDayToPerson = (req, res) => {
+/* const assignDayToPerson = (req, res) => {
   const body = req.body
 
   if (!body.dateToAdd) {
@@ -60,7 +60,7 @@ const assignDayToPerson = (req, res) => {
     .catch((err) => (
       res.status(500).json({ error: err })
     ))
-}
+} */
 
 const updatePersonByName = (req, res) => {
   const body = req.body
