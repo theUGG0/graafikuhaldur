@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { isSameDay, isWeekend } from "date-fns";
+import { getISODay, isSameDay, isWeekend } from "date-fns";
 
 const baseURL = "http://localhost:5001/api"
 
@@ -15,7 +15,7 @@ const addDateToPerson = (personObject, dateToAdd) => {
         `${baseURL}/persons/${personObject.name}`, 
         {
             upcomingDates: [...personObject.upcomingDates, dateToAdd], 
-            ...((isWeekend(dateToAdd)? {holidayCount: personHolidayCount+1} : {weekdayCount: personWeekdayCount+1}))
+            ...((getISODay(dateToAdd) > 4? {holidayCount: personHolidayCount+1} : {weekdayCount: personWeekdayCount+1}))
         })
         .then(response => response.data)
     }
@@ -27,7 +27,7 @@ const removeDateFromPerson = (personObject, dateToRemove) => {
     return axios.put(
         `${baseURL}/persons/${personObject.name}`, 
         {upcomingDates: personObject.upcomingDates.filter(d => !isSameDay(new Date(d), dateToRemove)),
-            ...((isWeekend(dateToRemove)? {holidayCount: personHolidayCount-1} : {weekdayCount: personWeekdayCount-1}))
+            ...((getISODay(dateToRemove) > 4? {holidayCount: personHolidayCount-1} : {weekdayCount: personWeekdayCount-1}))
 
         })
         .then(response => response.data)
