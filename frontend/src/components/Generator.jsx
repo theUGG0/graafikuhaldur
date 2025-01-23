@@ -34,21 +34,44 @@ ALGORITHM FutureAssignmentBalancer:
 
         // logic
         // 1. select groups to generate with
-        // 2. assign dates to groups
+        // 2. assign dates to groups https://reactdatepicker.com/#example-select-multiple-dates
         // 3. generate
 
 import Select from 'react-select'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { useState } from 'react'
 
 const Generator = ({people, groups}) => {
 
-
+    const [selectedGroups, setSelectedGroups] = useState([])
+    const [selectedDates, setSelectedDates] = useState({});
+    const onGroupDatesChange = (group, dates) => {
+      setSelectedDates({...selectedDates, [group.value]: dates});
+    };
 
     return (
     <div>
         <Select
             isMulti
             options={groups.map(g => ({ label: g.name, value: g.name }))}
+            value={selectedGroups}
+            onChange={(values) => setSelectedGroups(values)}
         />
+        <div>
+            {selectedGroups.map(sg => (
+                <div key={sg}>
+                    <p>Assign dates to {sg.value}</p>
+                    <DatePicker
+                        selectedDates={selectedDates[sg.value] || null}
+                        selectsMultiple
+                        onChange={(dates) => onGroupDatesChange(sg, dates)}
+                        shouldCloseOnSelect={false}
+                        disabledKeyboardNavigation
+                    />
+                </div>
+            ))}
+        </div>
     </div>
     )
 }
