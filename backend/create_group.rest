@@ -2,5 +2,5 @@ POST http://localhost:5001/api/groups
 Content-Type: application/json
 
 {
-    "name": "test"
+    "name": "test1"
 }

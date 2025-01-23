@@ -15,10 +15,6 @@ const Schedule = () => {
     })
     }, [])
 
-    const handleTabSwitch = (props) => {
-
-    }
-
     return(
     <div>
         <div>
@@ -27,12 +23,12 @@ const Schedule = () => {
         <>
         <br/>
         <div>
-            <button onClick={() => handleTabSwitch(selectedTab === "generator" ? setSelectedTab("group") : setSelectedTab("generator"))}>
+            <button onClick={() => selectedTab === "generator" ? setSelectedTab("group") : setSelectedTab("generator")}>
                 {selectedTab === "generator" ? "Switch to Group tab" : "Switch to Generator tab"}
             </button>
         </div>
         <br/>
-        {selectedTab === "generator" ? (<Generator/>) : (<GroupAssigner/>)}
+        {selectedTab === "generator" ? (<Generator people={people}/>) : (<GroupAssigner people={people}/>)}
         </>
     </div>
     )

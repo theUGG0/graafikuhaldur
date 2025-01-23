@@ -20,4 +20,8 @@ const updateGroupByName = (req, res) => (
   Group.findOneAndUpdate({ name: req.params.name }, { assignedPeople: req.body.assignedPeople }, { new: true }).then(updatedGroup => res.status(200).json(updatedGroup))
 )
 
-module.exports = { getAllGroups, updateGroupByName, createGroup, getGroupByName }
+const deleteGroupByName = (req, res) => (
+  Group.findOneAndDelete({ name: req.params.name }, { new: true }).then(deletedGroup => res.status(200).json(deletedGroup))
+)
+
+module.exports = { getAllGroups, updateGroupByName, createGroup, getGroupByName, deleteGroupByName }
