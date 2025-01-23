@@ -20,12 +20,18 @@ const addDateToPerson = (personObject, dateToAdd) => {
         .then(response => response.data)
     }
 
-const removeDateFromPerson = (personObject, dateToRemove) => (
-    axios.put(
+const removeDateFromPerson = (personObject, dateToRemove) => {
+    const personHolidayCount = personObject.holidayCount ? personObject.holidayCount : 0
+    const personWeekdayCount = personObject.weekdayCount ? personObject.weekdayCount : 0
+
+    return axios.put(
         `${baseURL}/persons/${personObject.name}`, 
-        {upcomingDates: personObject.upcomingDates.filter(d => !isSameDay(new Date(d), dateToRemove))})
+        {upcomingDates: personObject.upcomingDates.filter(d => !isSameDay(new Date(d), dateToRemove)),
+            ...((isWeekend(dateToRemove)? {holidayCount: personHolidayCount-1} : {weekdayCount: personWeekdayCount-1}))
+
+        })
         .then(response => response.data)
-)
+    }
 
 const getAllPeopleWithDate = (dateToFind) => {    
 
