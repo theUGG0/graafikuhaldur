@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getISODay, isSameDay, isWeekend } from "date-fns";
+import { getISODay, isSameDay } from "date-fns";
 
 const baseURL = "http://localhost:5001/api"
 

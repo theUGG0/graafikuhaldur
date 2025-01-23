@@ -3,14 +3,9 @@ import Select from "react-select"
 import groupService from "../../services/groupService"
 
 
-const GroupAssigner = ({people}) => {
+const GroupAssigner = ({people, groups, setGroups}) => {
 
-    const [groups, setGroups] = useState([])
     const [newGroupName, setNewGroupName] = useState("")
-
-    useEffect(() => {
-        groupService.getAllGroups().then(data => setGroups(data))
-    }, []) 
 
     console.log(groups)
 
