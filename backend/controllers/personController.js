@@ -32,13 +32,13 @@ const addPerson = (req, res) => {
   if (body.holidayCount) person.holidayCount = body.holidayCount
 
   person.save()
-    .then(savedPerson => {
+    .then(savedPerson => (
       res.json(savedPerson)
-    }
     )
-    .catch(err => {
+    )
+    .catch(err => (
       res.status(400).json({ error: err })
-    })
+    ))
 }
 
 /* const assignDayToPerson = (req, res) => {

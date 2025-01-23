@@ -1,11 +1,11 @@
 const express = require('express')
 const personController = require('../controllers/personController')
 
-const router = express.Router()
+const personRouter = express.Router()
 
-router.get('/persons', personController.getAllPersons)
-router.get('/persons/:name', personController.getPersonByName)
-router.post('/persons', personController.addPerson)
-router.put('/persons/:name', personController.updatePersonByName)
+personRouter.get('/persons', personController.getAllPersons)
+personRouter.get('/persons/:name', personController.getPersonByName)
+personRouter.post('/persons', personController.addPerson)
+personRouter.put('/persons/:name', personController.updatePersonByName)
 
-module.exports = router
+module.exports = personRouter
