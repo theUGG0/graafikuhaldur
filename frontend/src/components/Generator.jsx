@@ -1,54 +1,58 @@
-
-/* 
-ALGORITHM FutureAssignmentBalancer:
-    // Track existing assignments
-    foreach person:
-        track_total_count(weekdays, weekends, holidays)
-        track_last_assigned_date()
-
-    // For each new date to be assigned:
-    for each future_date:
-        eligible_people = filter people where:
-            - Not assigned previous day
-            - Can work this type of day (weekday/weekend/holiday)
-        
-        score_candidates(eligible_people):
-            score = 0
-            // Lower total count means higher priority
-            score -= current_total_assignments * 3
-            
-            // Penalize if they already have many of this day type
-            if future_date is weekend:
-                score -= current_weekend_count * 2
-            else if future_date is weekday:
-                score -= current_weekday_count * 2
-            else: // holiday
-                score -= current_holiday_count * 2
-                
-            // Bonus for people who haven't worked in a while
-            score += days_since_last_assignment
-            
-        assign_date_to_highest_score()
-        update_counts_and_last_date()
-        */
-
-        // logic
-        // 1. select groups to generate with
-        // 2. assign dates to groups https://reactdatepicker.com/#example-select-multiple-dates
-        // 3. generate
-
 import Select from 'react-select'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
+import { differenceInDays, getISODay, isAfter, max, startOfToday} from 'date-fns'
 
-const Generator = ({people, groups}) => {
+const Generator = ({people, setPeople, groups}) => {
 
     const [selectedGroups, setSelectedGroups] = useState([])
     const [selectedDates, setSelectedDates] = useState({});
     const onGroupDatesChange = (group, dates) => {
       setSelectedDates({...selectedDates, [group.value]: dates});
     };
+
+    const generatorAlgorithm = () => {
+        selectedGroups.forEach(group => {
+            const groupObj = groups.find(g => g.name === group.value)
+            const dates = selectedDates[groupObj.name]
+            dates.forEach(date => {
+                const eligiblePeople = people.filter(p => (
+                    groupObj.assignedPeople.some(ap => p.name === ap) && 
+                    p.upcomingDates.every(d => {
+                        return Math.abs(differenceInDays(date, new Date(d))) > 1
+                    }) 
+                ))
+
+                
+                const peopleScores = eligiblePeople.map(person => {
+                    var score = 0
+                    const holidayCount = person.holidayCount || 0
+                    const weekdayCount = person.weekdayCount || 0
+
+                    score -= (holidayCount + weekdayCount) * 3
+                    
+                    score -= getISODay(date) > 4 ? holidayCount * 2 : weekdayCount * 2
+
+                    const latestDate = max(person.upcomingDates.filter(ud => !isAfter(new Date(ud), new Date(date))) || [startOfToday()])
+                    score += differenceInDays(date, latestDate) 
+                    
+                    return {person, score}
+
+
+                })
+
+                console.log(date, peopleScores)
+
+                const chosenPerson = peopleScores.reduce((max, current) => max.score > current.score ? max : current).person
+                const updatedChosenPerson = {...chosenPerson, upcomingDates: [...chosenPerson.upcomingDates, date]}
+
+                setPeople([...people, updatedChosenPerson])
+
+                })
+            
+        })
+    }
 
     return (
     <div>
@@ -72,6 +76,7 @@ const Generator = ({people, groups}) => {
                 </div>
             ))}
         </div>
+        <button onClick={() => generatorAlgorithm()}>Generate</button>
     </div>
     )
 }

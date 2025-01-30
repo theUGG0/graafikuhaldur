@@ -35,7 +35,7 @@ const Schedule = () => {
             </button>
         </div>
         <br/>
-        {selectedTab === "generator" ? (<Generator people={people} groups={groups}/>) : (<GroupAssigner people={people} groups={groups} setGroups={setGroups}/>)}
+        {selectedTab === "generator" ? (<Generator people={people} groups={groups} setPeople={setPeople}/>) : (<GroupAssigner people={people} groups={groups} setGroups={setGroups}/>)}
         </>
     </div>
     )
