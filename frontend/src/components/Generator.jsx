@@ -12,17 +12,28 @@ const Generator = ({people, setPeople, groups}) => {
       setSelectedDates({...selectedDates, [group.value]: dates});
     };
 
+    const peoplePerDayConfig = 2
+
     const generatorAlgorithm = () => {
+
+        var mutatedPeople = [...people]
+
         selectedGroups.forEach(group => {
             const groupObj = groups.find(g => g.name === group.value)
             const dates = selectedDates[groupObj.name]
             dates.forEach(date => {
-                const eligiblePeople = people.filter(p => (
+                const eligiblePeople = mutatedPeople.filter(p => (
                     groupObj.assignedPeople.some(ap => p.name === ap) && 
                     p.upcomingDates.every(d => {
                         return Math.abs(differenceInDays(date, new Date(d))) > 1
                     }) 
                 ))
+
+                const peoplePerDay = Math.max(0, peoplePerDayConfig-mutatedPeople.filter(p => p.upcomingDates.includes(date)).length)
+
+                console.log("peopleperday", peoplePerDay);
+                
+                
 
                 
                 const peopleScores = eligiblePeople.map(person => {
@@ -44,14 +55,23 @@ const Generator = ({people, setPeople, groups}) => {
 
                 console.log(date, peopleScores)
 
-                const chosenPerson = peopleScores.reduce((max, current) => max.score > current.score ? max : current).person
-                const updatedChosenPerson = {...chosenPerson, upcomingDates: [...chosenPerson.upcomingDates, date]}
+                const chosenPeople = peopleScores.sort((a,b) => b.score - a.score).splice(0, peoplePerDay).map(({person}) => person)
 
-                setPeople([...people, updatedChosenPerson])
+                const updatedChosenPeople = chosenPeople.map(p => ({...p, upcomingDates: [...p.upcomingDates, date]}))
+                    
+                mutatedPeople = mutatedPeople.map(p => {
+                    const chosenPerson = updatedChosenPeople.find(cp => cp.name === p.name)
+                    return chosenPerson ? chosenPerson : p
+                })
+                
 
+                
                 })
             
+            
         })
+
+        setPeople(mutatedPeople)
     }
 
     return (
